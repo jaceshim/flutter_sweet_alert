@@ -317,7 +317,7 @@ open class SweetAlert: UIViewController {
     open func show(action: ((_ buttonIndex: Int) -> Void)? = nil) ->SweetAlert{
         let window: UIWindow = UIApplication.shared.keyWindow!
         window.addSubview(view)
-        window.bringSubviewToFront(with: view)
+        window.bringSubviewToFront(view)
         view.frame = window.bounds
         userAction=action
         switch type {
