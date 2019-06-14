@@ -180,13 +180,13 @@ open class SweetAlert: UIViewController {
         var sz = UIScreen.main.bounds.size
         let sver = UIDevice.current.systemVersion as NSString
         let ver = sver.floatValue
-        if ver < 8.0 {
-            // iOS versions before 7.0 did not switch the width and height on device roration
-            if UIInterfaceOrientation.isLandscape(UIApplication.shared.statusBarOrientation) {
-                let ssz = sz
-                sz = CGSize(width:ssz.height, height:ssz.width)
-            }
-        }
+//        if ver < 8.0 {
+//            // iOS versions before 7.0 did not switch the width and height on device roration
+//            if UIInterfaceOrientation.isLandscape(UIApplication.shared.statusBarOrientation) {
+//                let ssz = sz
+//                sz = CGSize(width:ssz.height, height:ssz.width)
+//            }
+//        }
         self.resizeAndRelayout()
     }
     func setAlertType(_ type:AlertStyle) -> SweetAlert {
@@ -281,7 +281,7 @@ open class SweetAlert: UIViewController {
     open func update(action: ((_ buttonIndex: Int) -> Void)? = nil)->SweetAlert{
         let window: UIWindow = UIApplication.shared.keyWindow!
         window.addSubview(view)
-        window.bringSubviewToFront(toFront: view)
+        window.bringSubviewToFront(with: view)
         view.frame = window.bounds
         userAction=action
         switch type {
@@ -317,7 +317,7 @@ open class SweetAlert: UIViewController {
     open func show(action: ((_ buttonIndex: Int) -> Void)? = nil) ->SweetAlert{
         let window: UIWindow = UIApplication.shared.keyWindow!
         window.addSubview(view)
-        window.bringSubviewToFront(toFront: view)
+        window.bringSubviewToFront(with: view)
         view.frame = window.bounds
         userAction=action
         switch type {
@@ -649,7 +649,7 @@ class SuccessAnimatedView: AnimatableView {
         strokeStart.toValue = 0.68
         strokeStart.duration =  7.0*factor
         strokeStart.beginTime =  CACurrentMediaTime() + 3.0*factor
-        strokeStart.fillMode = kCAFillModeBackwards
+        strokeStart.fillMode = CAMediaTimingFillMode.backwards
         strokeStart.timingFunction = timing
         circleLayer.strokeStart = 0.68
         circleLayer.strokeEnd = 0.93
@@ -682,7 +682,7 @@ class LoadingAnimatedView: AnimatableView {
         super.init(frame: frame)
         self.backgroundColor=UIColor.white
         self.timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(LoadingAnimatedView.updateLoading), userInfo: nil, repeats: true)  //创建计时器
-        RunLoop.main.add(self.timer!, forMode: RunLoop.Mode.defaultRunLoop.Mode)//计时器需要加入到RunLoop中：RunLoop的目的是让你的线程在有工作的时候忙碌，没有工作的时候休眠
+        RunLoop.main.add(self.timer!, forMode: RunLoop.Mode.defaultRunLoopMode.Mode)//计时器需要加入到RunLoop中：RunLoop的目的是让你的线程在有工作的时候忙碌，没有工作的时候休眠
         self.timer?.fire()
         
     }
