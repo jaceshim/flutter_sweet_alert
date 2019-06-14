@@ -44,7 +44,7 @@ open class SweetAlert: UIViewController {
     init(alertType:AlertStyle) {
         super.init(nibName: nil, bundle: nil)
         self.view.frame = UIScreen.main.bounds
-        self.view.autoresizingMask = [UIViewAutoresizing.flexibleHeight, UIViewAutoresizing.flexibleWidth]
+        self.view.autoresizingMask = [UIView.AutoresizingMask.flexibleHeight, UIView.AutoresizingMask.flexibleWidth]
         self.view.backgroundColor = UIColor(red:0, green:0, blue:0, alpha:kBakcgroundTansperancy)
         self.view.addSubview(contentView)
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(SweetAlert.tapGesture(sender:))))
@@ -120,7 +120,7 @@ open class SweetAlert: UIViewController {
         // Subtitle
         if self.contentTextView.text.isEmpty == false {
             let subtitleString = contentTextView.text! as NSString
-            let rect = subtitleString.boundingRect(with: CGSize(width: width, height: 0.0), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:contentTextView.font!], context: nil)
+            let rect = subtitleString.boundingRect(with: CGSize(width: width, height: 0.0), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:contentTextView.font!], context: nil)
             textViewHeight = ceil(rect.size.height) + 10.0
             contentTextView.frame = CGRect(x: x, y: y, width: width, height: textViewHeight)
             contentView.addSubview(contentTextView)
@@ -129,8 +129,8 @@ open class SweetAlert: UIViewController {
         if(buttons.count>0){
             var buttonRect:[CGRect] = []
             for button in buttons {
-                let string = button.title(for: UIControlState())! as NSString
-                buttonRect.append(string.boundingRect(with: CGSize(width: width, height:0.0), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes:[NSAttributedStringKey.font:button.titleLabel!.font], context:nil))
+                let string = button.title(for: UIControl.State())! as NSString
+                buttonRect.append(string.boundingRect(with: CGSize(width: width, height:0.0), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes:[NSAttributedString.Key.font:button.titleLabel!.font], context:nil))
             }
             
             var totalWidth: CGFloat = 0.0
@@ -148,7 +148,7 @@ open class SweetAlert: UIViewController {
                 buttonX = buttons[i].frame.origin.x + kWidthMargin + buttonRect[i].size.width + 20.0
                 buttons[i].layer.cornerRadius = 5.0
                 self.contentView.addSubview(buttons[i])
-                buttons[i].addTarget(self, action: #selector(SweetAlert.pressed(_:)), for: UIControlEvents.touchUpInside)
+                buttons[i].addTarget(self, action: #selector(SweetAlert.pressed(_:)), for: UIControl.Event.touchUpInside)
                 
             }
             y += kHeightMargin + buttonRect[0].size.height + 10.0
@@ -182,7 +182,7 @@ open class SweetAlert: UIViewController {
         let ver = sver.floatValue
         if ver < 8.0 {
             // iOS versions before 7.0 did not switch the width and height on device roration
-            if UIInterfaceOrientationIsLandscape(UIApplication.shared.statusBarOrientation) {
+            if UIInterfaceOrientation.isLandscape(UIApplication.shared.statusBarOrientation) {
                 let ssz = sz
                 sz = CGSize(width:ssz.height, height:ssz.width)
             }
@@ -245,8 +245,8 @@ open class SweetAlert: UIViewController {
     open func setCancelButton(_ isShow:Bool,_ text:String) ->SweetAlert{
         if(isShow){
             if text.isEmpty == false {
-                let button: UIButton = UIButton(type: UIButtonType.custom)
-                button.setTitle(text, for: UIControlState())
+                let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
+                button.setTitle(text, for: UIControl.State())
                 button.backgroundColor = UIColor.colorFromRGB(0xdd6b55)
                 button.isUserInteractionEnabled = true
                 button.tag = 0
@@ -257,8 +257,8 @@ open class SweetAlert: UIViewController {
     }
     open func setConfirmButton(_ text:String) ->SweetAlert{
         if text.isEmpty == false {
-            let button: UIButton = UIButton(type: UIButtonType.custom)
-            button.setTitle(text, for: UIControlState())
+            let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
+            button.setTitle(text, for: UIControl.State())
             button.backgroundColor = UIColor.colorFromRGB(0x6bd505)
             button.isUserInteractionEnabled = true
             button.tag = 1
@@ -281,7 +281,7 @@ open class SweetAlert: UIViewController {
     open func update(action: ((_ buttonIndex: Int) -> Void)? = nil)->SweetAlert{
         let window: UIWindow = UIApplication.shared.keyWindow!
         window.addSubview(view)
-        window.bringSubview(toFront: view)
+        window.bringSubviewToFront(toFront: view)
         view.frame = window.bounds
         userAction=action
         switch type {
@@ -317,7 +317,7 @@ open class SweetAlert: UIViewController {
     open func show(action: ((_ buttonIndex: Int) -> Void)? = nil) ->SweetAlert{
         let window: UIWindow = UIApplication.shared.keyWindow!
         window.addSubview(view)
-        window.bringSubview(toFront: view)
+        window.bringSubviewToFront(toFront: view)
         view.frame = window.bounds
         userAction=action
         switch type {
@@ -450,7 +450,7 @@ class CancelAnimatedView: AnimatableView {
         circleLayer.path = outlineCircle
         circleLayer.fillColor = UIColor.clear.cgColor;
         circleLayer.strokeColor = UIColor.colorFromRGB(0xF27474).cgColor;
-        circleLayer.lineCap = kCALineCapRound
+        circleLayer.lineCap = CAShapeLayerLineCap.round
         circleLayer.lineWidth = 4;
         circleLayer.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
         circleLayer.position = CGPoint(x: self.frame.size.width/2.0, y: self.frame.size.height/2.0)
@@ -459,7 +459,7 @@ class CancelAnimatedView: AnimatableView {
         crossPathLayer.path = crossPath
         crossPathLayer.fillColor = UIColor.clear.cgColor;
         crossPathLayer.strokeColor = UIColor.colorFromRGB(0xF27474).cgColor;
-        crossPathLayer.lineCap = kCALineCapRound
+        crossPathLayer.lineCap = CAShapeLayerLineCap.round
         crossPathLayer.lineWidth = 4;
         crossPathLayer.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
         crossPathLayer.position = CGPoint(x: self.frame.size.width/2.0, y: self.frame.size.height/2.0)
@@ -482,7 +482,7 @@ class CancelAnimatedView: AnimatableView {
         animation.fromValue = NSValue(caTransform3D: t)
         animation.toValue = NSValue(caTransform3D:t2)
         animation.isRemovedOnCompletion = false
-        animation.fillMode = kCAFillModeForwards
+        animation.fillMode = CAMediaTimingFillMode.forwards
         self.circleLayer.add(animation, forKey: "transform")
         
         
@@ -504,7 +504,7 @@ class CancelAnimatedView: AnimatableView {
         fadeInAnimation.fromValue = 0.3
         fadeInAnimation.toValue = 1.0
         fadeInAnimation.isRemovedOnCompletion = false
-        fadeInAnimation.fillMode = kCAFillModeForwards
+        fadeInAnimation.fillMode = CAMediaTimingFillMode.forwards
         self.crossPathLayer.add(fadeInAnimation, forKey: "opacity")
     }
     
@@ -547,7 +547,7 @@ class InfoAnimatedView: AnimatableView {
         circleLayer.path = outlineCircle
         circleLayer.fillColor = UIColor.clear.cgColor;
         circleLayer.strokeColor = UIColor.colorFromRGB(0xF8D486).cgColor;
-        circleLayer.lineCap = kCALineCapRound
+        circleLayer.lineCap = CAShapeLayerLineCap.round
         circleLayer.lineWidth = 4;
         circleLayer.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
         circleLayer.position = CGPoint(x: self.frame.size.width/2.0, y: self.frame.size.height/2.0)
@@ -559,7 +559,7 @@ class InfoAnimatedView: AnimatableView {
         let colorAnimation = CABasicAnimation(keyPath:"strokeColor")
         colorAnimation.duration = 1.0;
         colorAnimation.repeatCount = HUGE
-        colorAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        colorAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         colorAnimation.autoreverses = true
         colorAnimation.fromValue = UIColor.colorFromRGB(0xF7D58B).cgColor
         colorAnimation.toValue = UIColor.colorFromRGB(0xF2A665).cgColor
@@ -615,7 +615,7 @@ class SuccessAnimatedView: AnimatableView {
         outlineLayer.path = outlineCircle
         outlineLayer.fillColor = UIColor.clear.cgColor;
         outlineLayer.strokeColor = UIColor(red: 150.0/255.0, green: 216.0/255.0, blue: 115.0/255.0, alpha: 1.0).cgColor;
-        outlineLayer.lineCap = kCALineCapRound
+        outlineLayer.lineCap = CAShapeLayerLineCap.round
         outlineLayer.lineWidth = 4;
         outlineLayer.opacity = 0.1
         self.layer.addSublayer(outlineLayer)
@@ -625,7 +625,7 @@ class SuccessAnimatedView: AnimatableView {
         circleLayer.path = path
         circleLayer.fillColor = UIColor.clear.cgColor;
         circleLayer.strokeColor = UIColor(red: 150.0/255.0, green: 216.0/255.0, blue: 115.0/255.0, alpha: 1.0).cgColor;
-        circleLayer.lineCap = kCALineCapRound
+        circleLayer.lineCap = CAShapeLayerLineCap.round
         circleLayer.lineWidth = 4;
         circleLayer.actions = [
             "strokeStart": NSNull(),
@@ -682,7 +682,7 @@ class LoadingAnimatedView: AnimatableView {
         super.init(frame: frame)
         self.backgroundColor=UIColor.white
         self.timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(LoadingAnimatedView.updateLoading), userInfo: nil, repeats: true)  //创建计时器
-        RunLoop.main.add(self.timer!, forMode: RunLoopMode.defaultRunLoopMode)//计时器需要加入到RunLoop中：RunLoop的目的是让你的线程在有工作的时候忙碌，没有工作的时候休眠
+        RunLoop.main.add(self.timer!, forMode: RunLoop.Mode.defaultRunLoop.Mode)//计时器需要加入到RunLoop中：RunLoop的目的是让你的线程在有工作的时候忙碌，没有工作的时候休眠
         self.timer?.fire()
         
     }
