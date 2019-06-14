@@ -281,7 +281,7 @@ open class SweetAlert: UIViewController {
     open func update(action: ((_ buttonIndex: Int) -> Void)? = nil)->SweetAlert{
         let window: UIWindow = UIApplication.shared.keyWindow!
         window.addSubview(view)
-        window.bringSubviewToFront(with: view)
+        window.bringSubviewToFront(view)
         view.frame = window.bounds
         userAction=action
         switch type {
@@ -682,7 +682,7 @@ class LoadingAnimatedView: AnimatableView {
         super.init(frame: frame)
         self.backgroundColor=UIColor.white
         self.timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(LoadingAnimatedView.updateLoading), userInfo: nil, repeats: true)  //创建计时器
-        RunLoop.main.add(self.timer!, forMode: RunLoop.Mode.defaultRunLoopMode.Mode)//计时器需要加入到RunLoop中：RunLoop的目的是让你的线程在有工作的时候忙碌，没有工作的时候休眠
+        RunLoop.main.add(self.timer!, forMode: RunLoop.Mode.default)//计时器需要加入到RunLoop中：RunLoop的目的是让你的线程在有工作的时候忙碌，没有工作的时候休眠
         self.timer?.fire()
         
     }
